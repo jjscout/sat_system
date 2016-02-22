@@ -9,11 +9,15 @@ namespace sat_system
     class control_station
     {
         private LinkedList<satellite> satellites;
+        public LinkedList<satellite> getList()
+        {
+            return satellites;
+        }
 
         private static control_station _instance;
         protected control_station()
         {
-
+            satellites = new LinkedList<satellite>();
         }
         public static control_station GetControlStation()
         {
@@ -26,16 +30,9 @@ namespace sat_system
         }
         public void LaunchSatellite(Type satType, int alt = 150, int location = 0, int fuel = 1000)
         {
-            if (satType == null)
-            {
-                return;
-            }
-          /*  satellite tempSatellite = new typeof(satType)();
-            if (tempSatellite != null)
-            {
-               satellites.AddLast(tempSatellite);
-            }*/
-           
+            SatelliteFactory newSatellite = new SatelliteFactory();
+            satellite newSat = newSatellite.CreateSatellite(satType);
+            satellites.AddLast(newSat);
             
         }
         public void MoveSatellite(int Id, int TgtAlt)
@@ -68,6 +65,13 @@ namespace sat_system
             Point p = new Point(32, 34);
             img.GetUrl(p);
             return img.getPath();
+        }
+        public void checkBit()
+        {
+            foreach (satellite sat in satellites)
+            {
+                Console.WriteLine("status of satellite "+ sat.GetId() + "is " + sat.Bit().ToString().ToString());
+            }
         }
     }
 }

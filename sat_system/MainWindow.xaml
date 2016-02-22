@@ -12,7 +12,15 @@
                 <BitmapImage UriSource=""/>
             </Image.Source>
         </Image>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Height="34" Margin="77,193,0,0" VerticalAlignment="Top" Width="54" Click="button_Click"/>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Height="34" Margin="44,213,0,0" VerticalAlignment="Top" Width="54" Click="button_Click"/>
+        <Button x:Name="button1" Content="Launch" HorizontalAlignment="Left" Height="24" Margin="49,105,0,0" VerticalAlignment="Top" Width="49"/>
+        <ComboBox x:Name="satList" HorizontalAlignment="Left" Height="29" Margin="44,43,0,0" VerticalAlignment="Top" Width="209" SelectionChanged="satList_SelectionChanged"
+                  ItemsSource="{Binding Path=Program.station1.satellites}" 
+                  DisplayMemberPath="Name" 
+                  SelectedValuePath="Name" 
+                  SelectedValue="{Binding Path=Program.station1.satellites}" />
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="86" Margin="318,43,0,0" VerticalAlignment="Top" Width="158" SelectionChanged="listBox_SelectionChanged"/>
+        <ComboBox x:Name="typeSat" HorizontalAlignment="Left" VerticalAlignment="Top" Width="204" Margin="49,165,0,0" SelectionChanged="comboBox_SelectionChanged"/>
 
     </Grid>
 </Window>

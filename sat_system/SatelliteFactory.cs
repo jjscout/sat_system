@@ -8,9 +8,10 @@ namespace sat_system
 {
     class SatelliteFactory
     {
-        satellite newSatellite;
+        
         public satellite CreateSatellite(Type typesatellite)
         {
+            satellite newSatellite;
             if (typesatellite == typeof(Communication))
             {
                 newSatellite = new Communication();

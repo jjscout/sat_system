@@ -18,21 +18,54 @@ namespace sat_system
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    
     public partial class MainWindow : Window
     {
         private Program Main;
+        public readonly string[] typeOfSatellite =  { "Communication", "Photography","Cyber","Meteo" };
         public string ImageURL { get; set; }
+        
         public MainWindow()
         {
             Main = new Program();
-            Program.main();
+            
             InitializeComponent();
+            Program.main();
+            foreach (satellite sat in Program.station1.getList())
+            {
+                ComboBoxItem newItem = new ComboBoxItem();
+                newItem.Content = "Sattelite " + sat.GetId();
+                satList.Items.Add(newItem);
+            }
+            foreach (string item in typeOfSatellite)
+            {
+                  ComboBoxItem newItem = new ComboBoxItem();
+                  newItem.Content = item;
+                   typeSat.Items.Add(newItem);
+                //
+            }
+
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void Launch_Click(object sender, RoutedEventArgs e)
         {
             //Program Main = new P 
-            string ImageURL = Main.GetImgUrl();
+            
+        }
+
+        private void satList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void typeSat_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
