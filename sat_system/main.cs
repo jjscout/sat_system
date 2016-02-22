@@ -8,7 +8,7 @@ namespace sat_system
 {
     class Program
     {
-        private static control_station station1;
+        public static control_station station1;
         public static void main()
         {
             station1 = control_station.GetControlStation();

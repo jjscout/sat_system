@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace sat_system
 {
-    class Image
+    class SatImage
     {
         protected string path;
 
-        public Image()
+        public SatImage()
         {
             path = "";
         }
@@ -33,7 +33,7 @@ namespace sat_system
         }
     }
 
-    class GoogleMapImage : Image
+    class GoogleMapImage : SatImage
     {
         public void GetUrl(Point Loacation)
         {

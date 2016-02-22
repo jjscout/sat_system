@@ -31,8 +31,13 @@ namespace sat_system
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            Image image = new Image();
             //Program Main = new P 
-            string ImageURL = Main.GetImgUrl();
+            string ImageURL = Program.station1.getImgUrl();//Main.GetImgUrl();
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.UriSource = new Uri(ImageURL, UriKind.Absolute);
+            image.Source = bitmap;
+            //MainWindow.Children.Add(image);
         }
     }
 }
