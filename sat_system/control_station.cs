@@ -6,21 +6,36 @@ using System.Threading.Tasks;
 
 namespace sat_system
 {
-    enum SatType
-    {
-        
-    }
     class control_station
     {
-        private LinkedList<satellite> satellites; 
-        
-        public void LaunchSatellite(Type satellite, int alt = 150, int location = 0, int fuel = 1000)
+        private LinkedList<satellite> satellites;
+
+        private static control_station _instance;
+        protected control_station()
         {
-            if (satellite == null)
+
+        }
+        public static control_station GetControlStation()
+        {
+            if (_instance == null)
+            {
+                _instance = new control_station();
+            }
+
+            return _instance;
+        }
+        public void LaunchSatellite(Type satType, int alt = 150, int location = 0, int fuel = 1000)
+        {
+            if (satType == null)
             {
                 return;
             }
-            satellites.AddLast(new satellite(alt, location, fuel));
+          /*  satellite tempSatellite = new typeof(satType)();
+            if (tempSatellite != null)
+            {
+               satellites.AddLast(tempSatellite);
+            }*/
+           
             
         }
         public void MoveSatellite(int Id, int TgtAlt)

@@ -20,15 +20,19 @@ namespace sat_system
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Program Main;
         public string ImageURL { get; set; }
         public MainWindow()
         {
+            Main = new Program();
+            Program.main();
             InitializeComponent();
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            ImageURL = control_station.
+            //Program Main = new P 
+            string ImageURL = Main.GetImgUrl();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace sat_system
 {
-    class satellite
+    abstract class satellite
     {
         // constants
         private const double GravitationalParameter = 3.986e14;
@@ -22,12 +22,20 @@ namespace sat_system
         private int Fuel { get; set; }
         private long LastUpdate { get; set; }
         // functions 
-        public satellite(int alt = 150, int pos = 0, int fuel = 1000)
+        protected satellite(int alt = 150, int pos = 0, int fuel = 1000)
         {
             Altitude = alt;
             Location = pos;
             Fuel = fuel;
             instance++;
+            Id = instance;
+        }
+
+        protected satellite(satellite tempSatellite)
+        {
+            Altitude = tempSatellite.Altitude;
+            Location = tempSatellite.Location;
+            Fuel = tempSatellite.Fuel;
             Id = instance;
         }
         public int GetAltitude()
@@ -49,18 +57,19 @@ namespace sat_system
             Location = Location + rate() * (int)((NowTime.Ticks - LastUpdate) / 1e7);
             LastUpdate = NowTime.Ticks;
         }
-        private int Location
+        private int Location;
+        
+        public int getLocation()
         {
-            get
-            {
-                UpdateLocation();
-                return Location;
-            }
-            set
-            {
-                Location = value;
-            }
+            UpdateLocation();
+            return Location;
         }
+
+         public void setLocation(int value)
+         {
+             Location = value;
+         }
+        
 
 
         private int rate()
