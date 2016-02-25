@@ -13,7 +13,7 @@ namespace sat_system
         public static void main()
         {
             station1 = control_station.GetControlStation();
-            station1.LaunchSatellite(typeof(Photography));
+            station1.LaunchSatellite("Photography");
             
 
 

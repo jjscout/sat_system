@@ -15,6 +15,11 @@ namespace sat_system
             Location_X = X;
             Location_Y = Y;
         }
+        public Point(Point P)
+        {
+            Location_X = P.getLoaction_X();
+            Location_Y = P.getLoaction_Y();
+        }
         public int getLoaction_X()
         {
             return Location_X;
@@ -30,6 +35,10 @@ namespace sat_system
         public void setLoaction_Y(int newLocation)
         {
             Location_Y = newLocation;
+        }
+        public override string ToString()
+        {
+            return " x: " + Location_X.ToString() + " y: " + Location_Y.ToString() + " ";
         }
     }
 }

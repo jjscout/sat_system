@@ -9,22 +9,36 @@ namespace sat_system
     class subject
     {
         private int weather;
-        private List<IObserver<satellite>> observers;
-        public void Subscribe(IObserver<satellite> observer)
+        public static LinkedList<string> message;
+        private LinkedList<satellite> observers;
+        public subject ( )
         {
-            observers.Add(observer);
+            Random rnd1 = new Random();
+            message = new LinkedList<string>();
+            observers = new LinkedList<satellite>();
+            weather = (int)(rnd1.Next(1000));
         }
 
-        public void Unsubscribe(IObserver<satellite> observer)
+        public void Subscribe(satellite observer)
+        {
+            observers.AddLast(observer);
+        }
+
+
+        public void Unsubscribe(satellite observer)
         {
             observers.Remove(observer);
         }
 
         public void Notify()
         {
+            Random rnd1 = new Random();
+            weather = (int)(rnd1.Next(1,150));
+            message.Clear();
             foreach (satellite item in observers)
             {
-                item.Update(weather);
+                item.SetUpdateStrategy(weather);
+                
             };
         }
     }

@@ -56,7 +56,39 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ActivateComm.xaml.cs">
+      <DependentUpon>ActivateComm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivateCyber.xaml.cs">
+      <DependentUpon>ActivateCyber.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivateMeteo.xaml.cs">
+      <DependentUpon>ActivateMeteo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ActivatePhoto.xaml.cs">
+      <DependentUpon>ActivatePhoto.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CyberFuncClass.cs" />
+    <Compile Include="SatFunctionParams.cs" />
+    <Compile Include="StrategyBitSubcribe.cs" />
     <Compile Include="subject.cs" />
+    <Compile Include="visitor.cs" />
+    <Page Include="ActivateComm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivateCyber.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivateMeteo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ActivatePhoto.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

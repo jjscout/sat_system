@@ -9,10 +9,10 @@ namespace sat_system
     class SovietAdapter: Photography
     {
         private SovietPhotography _adaptee = new SovietPhotography();
-
-        public override void GetPicture(Point P)
+        public SovietAdapter(int alt, int pos, int fuel) : base(alt, pos, fuel) { }
+        public virtual string GetPicture(PhotographyParams P)
         {
-            _adaptee.SovietGetPicture(P);
+            return _adaptee.SovietGetPicture(new Point(P.location));
         }
     }
 }

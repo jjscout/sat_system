@@ -9,24 +9,24 @@ namespace sat_system
     class SatelliteFactory
     {
         
-        public satellite CreateSatellite(Type typesatellite)
+        public satellite CreateSatellite(string typesatellite,int alt,int location,int fuel)
         {
             satellite newSatellite;
-            if (typesatellite == typeof(Communication))
+            if (typesatellite == "Communication")
             {
-                newSatellite = new Communication();
+                newSatellite = new Communication(alt,location,fuel);
             }
-            else if (typesatellite == typeof(Photography))
+            else if (typesatellite == "Photography")
             {
-                newSatellite = new Photography();
+                newSatellite = new Photography(alt, location, fuel);
             }
-            else if (typesatellite == typeof(Cyber))
+            else if (typesatellite == "Cyber")
             {
-                newSatellite = new Cyber();
+                newSatellite = new Cyber(alt, location, fuel);
             }
-            else if (typesatellite == typeof(Meteo))
+            else if (typesatellite == "Meteo")
             {
-                newSatellite = new Meteo();
+                newSatellite = new Meteo(alt, location, fuel);
             }
             else
             {

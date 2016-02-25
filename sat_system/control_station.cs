@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,14 @@ namespace sat_system
 {
     class control_station
     {
-        private LinkedList<satellite> satellites;
-        public LinkedList<satellite> getList()
+        public List<string> satTypesStrArr = new List<string>();
+        private ObservableCollection<satellite> satellites;
+        private subject Observer;
+        public subject getSubject()
+        {
+            return Observer;
+        }
+        public ObservableCollection<satellite> getList()
         {
             return satellites;
         }
@@ -17,7 +24,26 @@ namespace sat_system
         private static control_station _instance;
         protected control_station()
         {
-            satellites = new LinkedList<satellite>();
+            satellites = new ObservableCollection<satellite>();
+
+            var satTypesTemp = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
+                        from assemblyType in domainAssembly.GetTypes()
+                        where typeof(satellite).IsAssignableFrom(assemblyType) && !assemblyType.IsAbstract
+                        select assemblyType).ToArray();
+
+            foreach (var item in satTypesTemp)
+            {
+                if (item != typeof(SovietAdapter))
+                {
+                    string temp = item.ToString();
+                    int index = temp.IndexOf(".") + 1;
+                    satTypesStrArr.Add(temp.Substring(index));
+                }
+                
+            }
+            Observer = new subject();
+
+
         }
         public static control_station GetControlStation()
         {
@@ -28,30 +54,30 @@ namespace sat_system
 
             return _instance;
         }
-        public void LaunchSatellite(Type satType, int alt = 150, int location = 0, int fuel = 1000)
+        public void LaunchSatellite(string satType, int alt = 150, int location = 0, int fuel = 1000)
         {
             SatelliteFactory newSatellite = new SatelliteFactory();
-            satellite newSat = newSatellite.CreateSatellite(satType);
-            satellites.AddLast(newSat);
+            satellite newSat = newSatellite.CreateSatellite(satType, alt, location, fuel);
+            satellites.Add(newSat);
             
         }
         public void MoveSatellite(int Id, int TgtAlt)
         {
-            FindId(Id).SetAltitude(TgtAlt);
+            /*FindId(Id)*/satellites[Id].SetAltitude(TgtAlt);
         }
-        public void ActivateSatellite(int Id)
+        public string ActivateSatellite(int Id,SatFunctionParams parmet)
         {
-            FindId(Id).Function();
+            return satellites[Id].Function(parmet);
         }
         // utilities
         public satellite FindId(int id)
         {
             satellite current = satellites.First();
-            while (current != null)
+            foreach (var item in satellites)
             {
-                if (current.GetId() == id)
+                if (item.GetId() == id)
                 {
-                    return current;
+                    return item;
                 }
             }
             return null;
@@ -66,12 +92,15 @@ namespace sat_system
             img.GetUrl(p);
             return img.getPath();
         }
-        public void checkBit()
+        public LinkedList<string> checkBit()
         {
+            LinkedList<string> output = new LinkedList<string>();
             foreach (satellite sat in satellites)
             {
-                Console.WriteLine("status of satellite "+ sat.GetId() + "is " + sat.Bit().ToString().ToString());
+                //Console.WriteLine("status of satellite "+ sat.GetId() + "is " + sat.Bit().ToString().ToString());
+                output.AddLast("satellite" + sat.GetId() + ": " + sat.GetBit().ToString().ToString());
             }
+            return output;
         }
     }
 }

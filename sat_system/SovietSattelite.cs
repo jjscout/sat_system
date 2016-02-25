@@ -99,12 +99,12 @@ namespace sat_system
     {
 
 
-        public void SovietGetPicture(Point location)
+        public string SovietGetPicture(Point location)
         {
             GoogleMapImage newImage = new GoogleMapImage();
             newImage.GetUrl(location);
             newImage.DisplayPicture();
-
+            return newImage.getPath();
         }
     }
 }

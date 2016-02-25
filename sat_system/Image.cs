@@ -39,7 +39,7 @@ namespace sat_system
         {
            string latlng =  Loacation.getLoaction_X().ToString() + "," + Loacation.getLoaction_X().ToString();
            this.path = "http://maps.googleapis.com/maps/api/staticmap?center=" + latlng +
-                        "&zoom=16&size=200x200&maptype=roadmap&markers=color:blue%7Clabel:S%7C" +
+                        "&zoom=16&size=200x250&maptype=roadmap&markers=color:blue%7Clabel:S%7C" +
                          latlng + "&sensor=false"; 
         }
     }

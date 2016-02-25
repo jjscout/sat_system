@@ -5,22 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sat_system"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Image x:Name="image" HorizontalAlignment="Left" Height="138" Margin="293,144,0,0" VerticalAlignment="Top" Width="167" RenderTransformOrigin="-0.006,0.518">
-            <Image.Source>
-                <BitmapImage UriSource=""/>
-            </Image.Source>
-        </Image>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Height="34" Margin="44,213,0,0" VerticalAlignment="Top" Width="54" Click="button_Click"/>
-        <Button x:Name="button1" Content="Launch" HorizontalAlignment="Left" Height="24" Margin="49,105,0,0" VerticalAlignment="Top" Width="49"/>
-        <ComboBox x:Name="satList" HorizontalAlignment="Left" Height="29" Margin="44,43,0,0" VerticalAlignment="Top" Width="209" SelectionChanged="satList_SelectionChanged"
-                  ItemsSource="{Binding Path=Program.station1.satellites}" 
-                  DisplayMemberPath="Name" 
-                  SelectedValuePath="Name" 
-                  SelectedValue="{Binding Path=Program.station1.satellites}" />
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="86" Margin="318,43,0,0" VerticalAlignment="Top" Width="158" SelectionChanged="listBox_SelectionChanged"/>
-        <ComboBox x:Name="typeSat" HorizontalAlignment="Left" VerticalAlignment="Top" Width="204" Margin="49,165,0,0" SelectionChanged="comboBox_SelectionChanged"/>
+        Title="MainWindow" Height="499.666" Width="622.293">
+    <Grid Margin="0,0,-110,-106">
+
+        <Button x:Name="Launch" Content="Launch" HorizontalAlignment="Left" Height="34" Margin="32.106,237,0,0" VerticalAlignment="Top" Width="54" Click="Launch_Click" Grid.Column="2"/>
+        <Button x:Name="update" Content="Update" HorizontalAlignment="Left" Height="24" Margin="37.106,105,0,0" VerticalAlignment="Top" Width="49" Click="update_Click" Grid.Column="2"/>
+        
+            <ComboBox x:Name="satList"  ItemsSource="{Binding Path=control_station.satellites, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="29" Margin="32.106,43,0,0" VerticalAlignment="Top" Width="209" SelectionChanged="satList_SelectionChanged" Grid.Column="2"/>
+        
+        <ComboBox x:Name="typeSat" HorizontalAlignment="Left" VerticalAlignment="Top" Width="204" Margin="37.106,198,0,0" SelectionChanged="typeSat_SelectionChanged" Grid.Column="2"/>
+        <Label x:Name="label" Content="גובה" HorizontalAlignment="Left" Height="23" Margin="413,49,0,0" VerticalAlignment="Top" Width="82"/>
+        <Label x:Name="label1" Content="זווית" HorizontalAlignment="Left" Height="26" Margin="413,91,0,0" VerticalAlignment="Top" Width="68"/>
+        <Label x:Name="label2" Content="דלק" HorizontalAlignment="Left" Height="27" Margin="413,134,0,0" VerticalAlignment="Top" Width="42"/>
+        <TextBox x:Name="altitude" HorizontalAlignment="Left" Height="27" Margin="314.106,49,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="67" TextChanged="textBox_TextChanged" Grid.ColumnSpan="2" Grid.Column="2"/>
+        <TextBox x:Name="degree" HorizontalAlignment="Left" Height="26" Margin="314.106,91,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="67" TextChanged="degree_TextChanged" Grid.ColumnSpan="2" Grid.Column="2"/>
+        <TextBox x:Name="fuel" HorizontalAlignment="Left" Height="26" Margin="314.106,130,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="67" Grid.ColumnSpan="2" Grid.Column="2"/>
+        <Label x:Name="labelBit" Content="" HorizontalAlignment="Left" Height="114" Margin="335,275,0,0" VerticalAlignment="Top" Width="179" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.522"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Button x:Name="bit" Content="Bit" HorizontalAlignment="Left" Height="34" Margin="238.106,237,0,0" VerticalAlignment="Top" Width="58" Click="bit_Click" Grid.Column="2"/>
+        <Label x:Name="observ" Content="" HorizontalAlignment="Left" Height="113" Margin="314.106,344,0,0" VerticalAlignment="Top" Width="248" Grid.ColumnSpan="4" Grid.Column="2"/>
+        <Button x:Name="buttonObserv" Content="weather" HorizontalAlignment="Left" Height="41" Margin="150.106,379,0,0" VerticalAlignment="Top" Width="74" Click="buttonObserv_Click" Grid.Column="2"/>
+        <Button x:Name="addObserver" Content="Subscribe" HorizontalAlignment="Left" Height="24" Margin="104.106,105,0,0" VerticalAlignment="Top" Width="64" Click="addObserver_Click" Grid.Column="2"/>
+        <Button x:Name="removeObserver" Content="Unsubscribe" HorizontalAlignment="Left" Height="24" Margin="173.106,105,0,0" VerticalAlignment="Top" Width="68" Click="removeObserver_Click" Grid.Column="2"/>
+        <Button x:Name="action" Content="Sat Action" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="37.106,141,0,0" Click="action_Click" Grid.Column="2"/>
+        <Button x:Name="visitorfuel" Content="visitFuel" HorizontalAlignment="Left" Height="20" Margin="135,141,0,0" VerticalAlignment="Top" Width="63" Click="visitorfuel_Click"/>
 
     </Grid>
 </Window>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml;
 
 namespace sat_system
 {
@@ -21,8 +22,9 @@ namespace sat_system
         private int Altitude;
 
         private int bit = 1;
+
+        private int Fuel;
         
-        private int Fuel { get; set; }
         private long LastUpdate { get; set; }
         // functions 
         protected satellite(int alt = 150, int pos = 0, int fuel = 1000)
@@ -32,6 +34,7 @@ namespace sat_system
             Fuel = fuel;
             instance++;
             Id = instance;
+            FailureTime = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
         }
 
         protected satellite(satellite tempSatellite)
@@ -54,10 +57,17 @@ namespace sat_system
         {
             return Id;
         }
+
+        public int GetFuel()
+        {
+            return Fuel;
+        }
+
         private void UpdateLocation()
         {
             DateTime NowTime = new DateTime();
-            Location = Location + rate() * (int)((NowTime.Ticks - LastUpdate) / 1e7);
+            NowTime = DateTime.Now;
+            Location = Math.Abs((Location + rate() * (int)((NowTime.Ticks - LastUpdate) / 1e7))%360);
             LastUpdate = NowTime.Ticks;
         }
         private int Location;
@@ -80,10 +90,14 @@ namespace sat_system
             return (int) (Math.Sqrt(GravitationalParameter / 
                           Math.Pow(EarthRadius + Altitude, 3)) * 180 / Math.PI);
         }
+        public string Accept(visitor visitor1)
+        {
+            return visitor1.VisitSatellite(this);
+        }
 
 
 
-        
+
 
 
         public void CalcFuelChange(int AltitudeDiff)
@@ -91,53 +105,114 @@ namespace sat_system
             Fuel = Fuel - Math.Abs(AltitudeDiff) * AltitudeFuelChangeConst;
         }
 
-        public int Bit()
+        public int GetBit()
         {
             return bit;
         }
-
-        public virtual void Function() { }
-
-        public void Update(int weather)
+        public void SetBit(int bitNew)
         {
-            Console.WriteLine("satellite " + Id + "update" + "weather is : " + weather);
+            bit = bitNew;
         }
-        
+        //public abstract class FunctionParams { }
+        //private FunctionParams fParams;
+        public abstract string Function(SatFunctionParams FuncParams);
+        //{
+        //    return "";
+        //}
+
+        private DateTime FailureTime = new DateTime();
+        public void SetUpdateStrategy(int weather)
+        {
+            ContextBitSubscribe strategy;
+            if (weather > 100 /*|| FailureTime.Subtract(DateTime.Now) < new TimeSpan(0, 0, 10)*/)
+            {
+                strategy = new ContextBitSubscribe(new ProblemStrategy());
+                strategy.ContextUpdate(weather,this);
+            }
+            else
+            {
+                strategy = new ContextBitSubscribe(new NormalStrategy());
+                strategy.ContextUpdate(weather, this);
+            }
+            
+        }
+        //public Type ReturnSatType()
+        //{
+        //    int Index = satList.SelectedIndex;
+        //    return typeof(Program.station1.getList()[Index]);
+        //}
+
     }
 
 
     class Communication:satellite
     {
-        public void Function(Point NewPoint1, Point NewPoint2)
+        public Communication(int alt, int pos, int fuel) : base(alt, pos, fuel) { }
+
+        public override string Function(SatFunctionParams FuncParams)
         {
-            SatCom(NewPoint1, NewPoint2);
+            return SatCom(((CommunicationParams)FuncParams).GetPoint1(), ((CommunicationParams)FuncParams).GetPoint2());
         }
-        public void SatCom(Point NewPoint1, Point NewPoint2)
+        public string SatCom(Point NewPoint1, Point NewPoint2)
         {
-            Console.WriteLine("location : ", NewPoint1.ToString(), "send message to location : ", NewPoint2.ToString());
+            return "location : " + NewPoint1.ToString() + "\n send message to \n location : " + NewPoint2.ToString();
         }
+
+
         
     }
 
     class Photography:satellite
     {
-        public void Function(Point location)
+        public Photography(int alt, int pos , int fuel) : base(alt, pos, fuel) { }
+        public override string Function(SatFunctionParams FuncParams)
         {
-            GetPicture(location);
+            return GetPicture(((PhotographyParams)FuncParams).location);
         }
 
 
-        public virtual void GetPicture(Point location)
+        public string GetPicture(Point location)
         {
             GoogleMapImage newImage = new GoogleMapImage();
             newImage.GetUrl(location);
             newImage.DisplayPicture();
+            return newImage.getPath();
 
         }
     }
     class Cyber:satellite
     {
-        public override void Function() { }
+        private Type[] cyberActionTypes;
+        public List<string> cyberActionTypesArr = new List<string>();
+        public Cyber(int alt, int pos, int fuel): base(alt, pos, fuel)
+        {
+            cyberActionTypes = (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
+                                from assemblyType in domainAssembly.GetTypes()
+                                where typeof(CyberFuncClass).IsAssignableFrom(assemblyType) 
+                                && !assemblyType.IsAbstract
+                                select assemblyType).ToArray();
+            foreach (var item in cyberActionTypes)
+            {
+                string temp = item.ToString();
+                int index = temp.IndexOf(".") + 1;
+                cyberActionTypesArr.Add(temp.Substring(index));
+            }
+        }
+   
+        public override string Function(SatFunctionParams FuncParams)
+        {
+            LinkedList<ResultSearch> result = new LinkedList < ResultSearch >() ;
+            result.AddLast(new ResultSearch());
+            if (((CyberParams)FuncParams).URL)
+            {
+                result.AddLast(new CyberSearchURLDec(result.Last()));
+            }
+            if (((CyberParams)FuncParams).File)
+            {
+                result.AddLast(new CyberSearchFileDec(result.Last()));
+            }
+            return result.Last().CyberFunc((CyberParams)FuncParams);
+        }
         public int FindTarget(string path,string Target)
         {
 
@@ -146,16 +221,21 @@ namespace sat_system
 
 
         }
+
     }
     class Meteo:satellite
     {
-        public override void Function()
+        public Meteo(int alt, int pos, int fuel) : base(alt, pos, fuel) { }
+
+        public override string Function(SatFunctionParams met)
         {
-            GetWind();
+            return GetWind();
         }
-        public void GetWind()
+        public string GetWind()
         {
-            Console.WriteLine("wind");
+            Random rnd1 = new Random();
+
+            return "speed wind is: " + rnd1.Next(1,150).ToString();
 
         }
     }
